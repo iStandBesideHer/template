@@ -150,7 +150,7 @@
 
     <squarespace:script src="site-bundle.js" combo="false" />
 
-    {x-squarespace-footers}
+    {squarespace-footers}
 
   </body>
 </html>
