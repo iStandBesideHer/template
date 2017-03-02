@@ -28,11 +28,18 @@ jq2(function($) {
     console.log('onSubmit');
     var fields = scrapeForm();
     if (fields) {
-      $.post('https://c784rk69oh.execute-api.us-east-1.amazonaws.com/prod/her-page', fields, function(d) {
-        alert("SUCCESS: " + JSON.stringify(d));
-      })
-      .fail(function(e) {
-        alert("An error occurred, please try again later.");
+      $.ajax({
+        url: 'https://c784rk69oh.execute-api.us-east-1.amazonaws.com/prod/her-page',
+        type:"POST",
+        data:fields,
+        contentType:"application/json; charset=utf-8",
+        // dataType:"json",
+        success: function(d){
+          alert("SUCCESS: " + JSON.stringify(d));
+        },
+        fail: function(e) {
+          alert("An error occurred, please try again later.");
+        }
       });
     }
     return false;
