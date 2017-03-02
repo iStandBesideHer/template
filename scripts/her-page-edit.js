@@ -1,4 +1,4 @@
-// Custom code for posting a new /i-stand-beside page
+// Custom code for managing edits to her page
 var jq2 = jQuery.noConflict();
 jq2(function($) {
 
