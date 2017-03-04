@@ -71,8 +71,8 @@ jq2(function($) {
   // Fill the form with backend data
   var fillForm = function(form) {
     var fields = form.fields;
-    fields.herName.val(fromSS.title);
     var cc = fromSS.customContent;
+    fields.herName.val(cc.herName);
     fields.herDoing.val(cc.herDoing);
     fields.whenMM.val(cc.whenMM);
     fields.whenDD.val(cc.whenDD);
