@@ -3,6 +3,7 @@ var jq2 = jQuery.noConflict();
 jq2(function($) {
   // Force a window reload on hash change
   $(window).bind('hashchange', function() {
+    console.log(Date.now(), 'hashchange');
     document.location.reload(true);
   });
 
