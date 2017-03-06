@@ -1,6 +1,7 @@
 // Custom code for managing edits to her page
 var jq2 = jQuery.noConflict();
 var isAdd = null;
+var newPagePW = 'Strength&Beauty';
 var fromUrl = {   // Items scraped from the page URL
   id: null, // post id
   page: null, // slug
@@ -11,6 +12,7 @@ jq2(function($) {
 
   var $form = $('.Main-content form');
   var hashPW = function(pagePW) {return Base64.encode(pagePW.toLowerCase());};
+  var isDefaultPW = function() {return fromUrl.pagePW == hashPW(newPagePW)};
   isAdd = $('.Main-content form input').length < 5;
 
   // Scrape the form, returning a structure of form fields
@@ -31,12 +33,11 @@ jq2(function($) {
     if (isAdd) {
       fields = form.fields = {
         herName: $(inputs[0]),
-        pagePW: $(inputs[1]),
-        submit: $(inputs[2])
+        submit: $(inputs[1])
       }
       form.data = {
         herName: fields.herName.val(),
-        pagePW: hashPW(fields.pagePW.val()),
+        pagePW: hashPW(newPagePW),
       }
     }
     else {
@@ -94,14 +95,16 @@ jq2(function($) {
     // Specific add/update fields
     if (isAdd) {
 
-      // Password is required on add
-      fields.pagePW.css({borderColor:(data.pagePW ? '#ccc' : 'red')});
-      if (!data.pagePW) {
-        firstInvalidField = firstInvalidField || fields.pagePW;
-      }
     }
     else {
-      // Update field validation
+      // Update validation
+
+      // pagePW is required if it's default
+      var pwNeeded = isDefaultPW() && data.pagePW == hashPW(newPagePW);
+      fields.pagePW.css({borderColor:(pwNeeded ? 'red' : '#ccc')});
+      if (pwNeeded) {
+        firstInvalidField = firstInvalidField || fields.pagePW;
+      }
 
     }
 
@@ -193,8 +196,13 @@ jq2(function($) {
     return query;
   };
 
-  // Process the update form on load
-  if (!isAdd) {
+  // Page load processing
+  var fields = scrapeForm().fields;
+  fields.herName.css({fontSize:24,fontWeight:400});
+  if (isAdd) {
+
+  }
+  else {
 
     // Scrape URL params
     var urlParams = parseUrlParams();
@@ -204,14 +212,22 @@ jq2(function($) {
     fromUrl.page = urlId;
     fromUrl.pagePW = urlParams.hash;
 
+    // Fix up some fields
+    fields.herDoing.css({fontSize:20,fontWeight:400});
+    fields.herPicture.css({display:'none'});
+    fields.pagePW.css({width:260});
+    var pwHelp = isDefaultPW()
+      ? 'Enter a password to use for updating her page'
+      : '(optional) Change the password used for updating her page';
+    $('.password .description').text(pwHelp);
+
     // Load data from the backend
     loadForm();
   }
 
-  // Fix up some form fields
-  var fields = scrapeForm().fields;
-  fields.herName.css({fontSize:24,fontWeight:400});
-  fields.herDoing.css({fontSize:20,fontWeight:400});
-  fields.herPicture.css({display:'none'});
+  // Inject styles
+  $('body').append(
+'<style>' +
+'</style>');
 
 });
