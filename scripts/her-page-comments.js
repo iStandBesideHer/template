@@ -54,12 +54,11 @@ jq2(function($) {
   var reformatComments = function(a){
 
     // Format the comment input section
-    $('#comments .header-controls').css({display:'none'});
     $('#comments .comment-btn').html('Submit');
+    $('#comment-header,#her-input,#beside-ways').remove();
     $('#comments .new-comment-area')
       .before('<h3 id="comment-header"><span>How do you stand beside her?</span></h3>');
     $('#comments .input').css({height:'auto'});
-    $('#comments .comment-input').val("{\"msg\":\"hello\"}").css({display:'none'});
     $('#comments .comment-form:first').append(Mustache.render(besideWaysTemplate, besideWays));
     $('.comment-form').on('change', scrapeComment);
     $('.way-check').on('click', function(event) {
@@ -89,7 +88,14 @@ jq2(function($) {
       }, 360);
     });
 
+    // Fixup the comment submit action
+    $('.new-comment-area .comment-btn').on('click',function(){
+      var t = this;
+      setTimeout(reformatComments, 360);
+    });
+
     // Format each comment
+    $('.reply-area-wrapper').html('')
     $('.comment-list .timesince').text('Stands beside her');
     var items = $('.comment-list .comment-body p');
     items.each(function(index) {
@@ -176,6 +182,9 @@ jq2(function($) {
 
   var styleTemplate = 
 '<style>' +
+'  .comment-input, .header-controls, .squarespace-comment-buttons {' +
+'    display:none !important;' +
+'  }' +
 '  #her-input {' +
 '    resize:vertical;' +
 '    height:auto;' +
@@ -219,6 +228,14 @@ jq2(function($) {
 '  }' +
 '  .her-comment-icon {' +
 '    margin:15px 20px -10px 0;' +
+'  }' +
+'  @media only screen and (max-width: 500px) {' +
+'    .author {' +
+'      display:inline !important;' +
+'    }' +
+'    .way-desc {' +
+'      width:172px;' +
+'    }' +
 '  }' +
 '</style>';
     $('body').append(styleTemplate);
