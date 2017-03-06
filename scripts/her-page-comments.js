@@ -58,7 +58,7 @@ jq2(function($) {
 
     // Format the comment input section
     $('#comments .comment-btn').html('Submit');
-    $('#comment-header,#her-input,#beside-ways').remove();
+    $('#comment-header,#her-input,#beside-ways,#who-do-you-stand-beside').remove();
     $('#comments .new-comment-area')
       .before('<h3 id="comment-header"><span>How do you stand beside her?</span></h3>');
     $('#comments .input').css({height:'auto'});
@@ -265,7 +265,7 @@ jq2(function($) {
 '</div>';
 
   var whoDoYouStandBesideTemplate = 
-'<div class="sqs-block-html" style="text-align:right;">' +
+'<div id="who-do-you-stand-beside" class="sqs-block-html" style="text-align:right;">' +
 '  <p><a href="/i-stand-beside"><i>Who do you stand beside?</i></a></p>' +
 '</div>';
 
