@@ -1,6 +1,11 @@
 // Custom code for viewing the /beside/.. pages
 var jq2 = jQuery.noConflict();
 jq2(function($) {
+  // Force a window reload on hash change
+  $(window).bind('hashchange', function() {
+    document.location.reload(true);
+  }
+
   // Don't load when on the blog home page
   if (document.location.pathname == '/beside') {return;}
 
