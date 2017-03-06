@@ -2,10 +2,11 @@
 var jq2 = jQuery.noConflict();
 jq2(function($) {
   // Don't load when on the blog home page
-  if (document.location.pathname == '/beside') {return;}
+  if (document.location.pathname == '/beside' || document.location.pathname == '/beside/') {return;}
   var translator = document.createElement('textarea');
   var shareUrl = encodeURIComponent(document.location.href);
   var shareTitle = encodeURIComponent('#iStandBesideHer - ' + $('.BlogItem-title').text());
+  MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
   var openSocial = window.openSocial = function(url) {
     window.open(url,'_blank', "top=0,left=0,width=500,height=500");
@@ -111,14 +112,12 @@ jq2(function($) {
 
   // Observe for actual comments being injected
   var commentHook = function() {
-    MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
     var observer = new MutationObserver(reformatComments);
     var observeThis = $('.comments-content')[0];
     observer.observe(observeThis, {attributes:false, childList:true, characterData:true});
   }
 
   // Observe for comments-content (scaffolding) being injected
-  MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
   var observer = new MutationObserver(commentHook);
   var observeThis = document.body;
   var observeThis = $('.squarespace-comments')[0];
