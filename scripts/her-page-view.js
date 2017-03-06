@@ -1,6 +1,8 @@
 // Custom code for viewing the /beside/.. pages
 var jq2 = jQuery.noConflict();
 jq2(function($) {
+  // Don't load when on the blog home page
+  if (document.location.pathname == '/beside') {return;}
 
   // Scrape URL params
   var slugParts = window.location.href.split('-');

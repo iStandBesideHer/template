@@ -1,6 +1,8 @@
 // Custom code for managing her-page comments
 var jq2 = jQuery.noConflict();
 jq2(function($) {
+  // Don't load when on the blog home page
+  if (document.location.pathname == '/beside') {return;}
   var translator = document.createElement('textarea');
   var shareUrl = encodeURIComponent(document.location.href);
   var shareTitle = encodeURIComponent('#iStandBesideHer - ' + $('.BlogItem-title').text());
