@@ -63,6 +63,7 @@ jq2(function($) {
       .before('<h3 id="comment-header"><span>How do you stand beside her?</span></h3>');
     $('#comments .input').css({height:'auto'});
     $('#comments .comment-form:first').append(Mustache.render(besideWaysTemplate, besideWays));
+    $('.comment-list').before(whoDoYouStandBesideTemplate);
     $('.comment-form').on('change', scrapeComment);
     $('.way-check').on('click', function(event) {
       var $t = $(this);
@@ -261,6 +262,11 @@ jq2(function($) {
 '  </div>' +
 '  <div style="height:1px; clear:both;">&nbsp;</div>' +
 '{{/ways}}' +
+'</div>';
+
+  var whoDoYouStandBesideTemplate = 
+'<div class="sqs-block-html" style="text-align:right;">' +
+'  <p><a href="/i-stand-beside"><i>Who do you stand beside?</i></a></p>' +
 '</div>';
 
   var commentTemplate = 
