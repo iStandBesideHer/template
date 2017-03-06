@@ -184,7 +184,7 @@ jq2(function($) {
 
   var styleTemplate = 
 '<style>' +
-'  .comment-input, .header-controls, .squarespace-comment-buttons {' +
+'  .BlogItem-pagination, .comment-input, .header-controls, .squarespace-comment-buttons {' +
 '    display:none !important;' +
 '  }' +
 '  #her-input {' +
