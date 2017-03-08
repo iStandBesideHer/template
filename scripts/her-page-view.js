@@ -161,8 +161,9 @@ jq2(function($) {
   var viewPageStyle = 
 '<style>' +
 '  #block-her-photo img {' +
-'    margin-left:auto;' +
-'    margin-right:auto;' +
+'    margin: 10px auto 10px auto;' +
+'    box-shadow: 1px 2px 9px -2px rgba(0, 0, 0, 0.5);' +
+'    border-radius: 2px;' +
 '  }' +
 '</style>';
   $('body').append(viewPageStyle);
