@@ -313,7 +313,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'loadFile',
 	    value: function loadFile(file) {
 	      var fileReader = new FileReader();
-	      if (file && file.type.match('image')) {
+	      if (file && (file.type.match('image') || file.type.match('octet'))) {
 	        fileReader.readAsDataURL(file);
 	        fileReader.onload = this.onFileReaderLoaded.bind(this);
 	        fileReader.onerror = this.onFileReaderError.bind(this);

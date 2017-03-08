@@ -88,7 +88,9 @@ jq2(function($) {
     fields.whenMM.val(cc.whenMM);
     fields.whenDD.val(cc.whenDD);
     fields.whenYY.val(cc.whenYY);
-    cropper.cropit('imageSrc', fromSS.coverImageUrl);
+    var loc = document.location;
+    var imageSrc = fromSS.coverImageUrl.replace(/^.*squarespace.com/, loc.protocol + '//' + loc.host);
+    cropper.cropit('imageSrc', imageSrc);
   }
 
   // Validate a new form post, placing user into invalid fields
