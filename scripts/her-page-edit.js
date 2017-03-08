@@ -88,9 +88,19 @@ jq2(function($) {
     fields.whenMM.val(cc.whenMM);
     fields.whenDD.val(cc.whenDD);
     fields.whenYY.val(cc.whenYY);
-    var loc = document.location;
-    var imageSrc = fromSS.coverImageUrl.replace(/^.*squarespace.com/, loc.protocol + '//' + loc.host);
-    cropper.cropit('imageSrc', imageSrc);
+
+    // Building the cropper image source is tricky due to CORS issues.
+    if (cc.imageId) {
+      var imageSrc;
+      var loc = document.location;
+      if (loc.host == 'localhost:9000') {
+        imageSrc = fromSS.coverImageUrl.replace(/^.*squarespace.com/, loc.protocol + '//' + loc.host);
+      }
+      else {
+        imageSrc = 'https://istandbesideher.squarespace.com/item/' + cc.imageId + '?format=original'
+      }
+      cropper.cropit('imageSrc', imageSrc);
+    }
   }
 
   // Validate a new form post, placing user into invalid fields
@@ -263,13 +273,13 @@ jq2(function($) {
       maxZoom: 1.5,
       exportZoom: 2,
       freeMove: false,
-      smallImage: 'allow',
       imageBackground: false,
       onFileLoaderError:function(){
         console.log(Date.now(), 'File Loader Error');
       },
-      onImageError:function(){
+      onImageError:function(e){
         console.log(Date.now(), 'Image Error');
+        alert(e.message);
       },
       onImageLoaded:function(){
         hasImageLoaded = true;

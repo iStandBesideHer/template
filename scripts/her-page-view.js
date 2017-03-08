@@ -133,10 +133,9 @@ jq2(function($) {
 '    <form autocomplete="on" id="">' +
 '      <div class="field-list clear" id="">' +
 '        <div id="password-" class="form-item field password required">' +
-'          <label class="title" for="pw-field" id="">Page Password <span class="required">*</span></label>' +
+'          <label class="title" for="pw-field" id="">Update Password <span class="required">*</span></label>' +
 '          <div class="description" id="">' +
-'            Enter the password used when creating this page. ' +
-'            The word that comes to mind when thinking of Her.' +
+'Enter the password used when creating this page.' +
 '          </div>' +
 '          <input class="field-element" type="password" id="pw-field">' +
 '        </div>' +
