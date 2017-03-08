@@ -279,11 +279,12 @@ jq2(function($) {
 
     cropper = $('#image-cropper')
     cropper.cropit({
-      minZoom: 'cover',
+      minZoom: 'fit',
       maxZoom: 1.5,
       exportZoom: 2,
       freeMove: false,
       imageBackground: false,
+      smallImage: 'allow',
       onFileLoaderError:function(){
         console.log(Date.now(), 'File Loader Error');
       },
