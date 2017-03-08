@@ -158,6 +158,7 @@ jq2(function($) {
 '  }' +
 '</style>';
 
+  // Inject styles
   var viewPageStyle = 
 '<style>' +
 '  #block-her-photo img {' +

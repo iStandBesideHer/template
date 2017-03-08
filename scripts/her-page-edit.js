@@ -1,14 +1,20 @@
 // Custom code for managing edits to her page
 var jq2 = jQuery.noConflict();
 var isAdd = null;
+var cropper = null;
+var origFormFields = null;
+var cropper = null;
+var fromSS = null;
 var newPagePW = 'Strength&Beauty';
 var fromUrl = {   // Items scraped from the page URL
   id: null, // post id
   page: null, // slug
   pagePW: null // hashed PW
 };
-var fromSS = null;
 jq2(function($) {
+
+  var hasImageLoaded = false;
+  var hasImageChanged = false;
 
   var $form = $('.Main-content form');
   var hashPW = function(pagePW) {return Base64.encode(pagePW.toLowerCase());};
@@ -29,11 +35,13 @@ jq2(function($) {
   var scrapeForm = function() {
     var form = {};
     var inputs = $('.Main-content form input');
-    var fields;
+    var fields = form.fields = origFormFields;
     if (isAdd) {
-      fields = form.fields = {
-        herName: $(inputs[0]),
-        submit: $(inputs[1])
+      if (!fields) {
+        fields = origFormFields = form.fields = {
+          herName: $(inputs[0]),
+          submit: $(inputs[1])
+        }
       }
       form.data = {
         herName: fields.herName.val(),
@@ -41,19 +49,21 @@ jq2(function($) {
       }
     }
     else {
-      fields = form.fields = {
-        herName: $(inputs[0]),
-        herPicture: $(inputs[1]),
-        herDoing: $form.find('textarea'),
-        whenMM: $(inputs[2]),
-        whenDD: $(inputs[3]),
-        whenYY: $(inputs[4]),
-        pagePW: $(inputs[5]),
-        submit: $(inputs[6])
+      if (!fields) {
+        fields = origFormFields = form.fields = {
+          herName: $(inputs[0]),
+          herPicture: $(inputs[1]),
+          herDoing: $form.find('textarea'),
+          whenMM: $(inputs[2]),
+          whenDD: $(inputs[3]),
+          whenYY: $(inputs[4]),
+          pagePW: $(inputs[5]),
+          submit: $(inputs[6])
+        }
       }
       form.data = {
         herName: fields.herName.val(),
-        herPicture: fields.herPicture.val(),
+        herPicture: hasImageChanged ? scrapePicture() : '',
         herDoing: fields.herDoing.val(),
         whenMM: fields.whenMM.val(),
         whenDD: fields.whenDD.val(),
@@ -78,6 +88,7 @@ jq2(function($) {
     fields.whenMM.val(cc.whenMM);
     fields.whenDD.val(cc.whenDD);
     fields.whenYY.val(cc.whenYY);
+    cropper.cropit('imageSrc', fromSS.coverImageUrl);
   }
 
   // Validate a new form post, placing user into invalid fields
@@ -132,7 +143,7 @@ jq2(function($) {
         fromSS = d;
         var form = scrapeForm();
         fillForm(form);
-        form.fields.herDoing.focus();
+        // form.fields.herDoing.focus();
       },
       error: function(e) {
         console.error(e);
@@ -214,7 +225,6 @@ jq2(function($) {
 
     // Fix up some fields
     fields.herDoing.css({fontSize:20,fontWeight:400});
-    fields.herPicture.css({display:'none'});
     fields.pagePW.css({width:260});
     var pwHelp = isDefaultPW()
       ? 'Enter a password to use for updating her page'
@@ -223,11 +233,100 @@ jq2(function($) {
 
     // Load data from the backend
     loadForm();
+
+    // Inject the image editor
+    fields.herPicture.parent().html(
+'<div id="image-cropper">' +
+'' +
+'  <div class="cropit-preview"></div>' +
+'  <div class="picture-controls">' +
+'' +
+'    <span class="icon icon-rotate-left rotate-ccw-btn"></span>' +
+'    <span class="icon icon-rotate-right rotate-cw-btn"></span>' +
+'' +
+'    <span class="icon icon-image small-image"></span>' +
+'    <input type="range" class="cropit-image-zoom-input custom">' +
+'    <span class="icon icon-image large-image"></span>' +
+'' +
+'    <input type="file" class="cropit-image-input" />' +
+'    <span class="select-image-btn">Select a picture</span>' +
+'  </div>' +
+'' +
+'</div>' 
+    );
+
+    cropper = $('#image-cropper')
+    cropper.cropit({
+      minZoom: 'cover',
+      maxZoom: 1.5,
+      exportZoom: 2,
+      freeMove: false,
+      smallImage: 'allow',
+      imageBackground: false,
+      onFileLoaderError:function(){
+        console.log(Date.now(), 'File Loader Error');
+      },
+      onImageError:function(){
+        console.log(Date.now(), 'Image Error');
+      },
+      onImageLoaded:function(){
+        hasImageLoaded = true;
+      },
+      onOffsetChange:function(){
+        hasImageChanged = hasImageLoaded;
+      }
+    });
+
+    cropper.cropit('previewSize', {width:320, height:240});
+    cropper.find('.cropit-preview-image-container')
+      .append('<div style="margin-top:80px">Drop a picture of her here</div>')
+
+    $('.select-image-btn').click(function() {
+      hasImageChanged = true;
+      $('.cropit-image-input').click();
+    });
+    $('.rotate-cw-btn').click(function() {
+      hasImageChanged = true;
+      $('#image-cropper').cropit('rotateCW');
+    });
+    $('.rotate-ccw-btn').click(function() {
+      hasImageChanged = true;
+      $('#image-cropper').cropit('rotateCCW');
+    });
+
+  }
+
+  var scrapePicture = function() {
+    var imageData = cropper.cropit('export', {
+        type: 'image/png'
+    });
+    return imageData.substr(22);
   }
 
   // Inject styles
-  $('body').append(
+  var editPageStyle = 
 '<style>' +
-'</style>');
+'  .cropit-preview {' +
+'    border: 1px solid #ccc;' +
+'  }' +
+'  .cropit-preview-image {' +
+'    cursor: move;' +
+'  }' +
+'  .cropit-preview-image-container {' +
+'    text-align: center;' +
+'  }' +
+'  input.cropit-image-input {' +
+'    visibility: hidden;' +
+'    width: 20px;' +
+'  }' +
+'  .picture-controls {' +
+'    cursor: pointer;' +
+'    margin: 15px 0 40px;' +
+'  }' +
+'  .picture-controls input {' +
+'    cursor: pointer;' +
+'  }' +
+'</style>';
+  $('body').append(editPageStyle);
 
 });
