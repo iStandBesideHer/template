@@ -243,7 +243,7 @@ jq2(function($) {
     $('body').append(styleTemplate);
 
   var besideWaysTemplate = 
-'<textarea id="her-input" placeholder="A few words about standing beside Her..."></textarea>' +
+'<textarea id="her-input" placeholder="A few words about standing beside her..."></textarea>' +
 '<div id="beside-ways">' +
 '{{#ways}}' +
 '  <div id="way-{{name}}" class="beside-way" data-way-type="{{name}}">' +

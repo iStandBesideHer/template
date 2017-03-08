@@ -58,7 +58,8 @@ jq2(function($) {
           whenDD: $(inputs[3]),
           whenYY: $(inputs[4]),
           pagePW: $(inputs[5]),
-          submit: $(inputs[6])
+          yourName: $(inputs[6]),
+          submit: $(inputs[7])
         }
       }
       form.data = {
@@ -69,6 +70,7 @@ jq2(function($) {
         whenDD: fields.whenDD.val(),
         whenYY: fields.whenYY.val(),
         pagePW: hashPW(fields.pagePW.val()),
+        yourName: fields.yourName.val(),
       }
 
       // Place pw if not changed
@@ -88,6 +90,7 @@ jq2(function($) {
     fields.whenMM.val(cc.whenMM);
     fields.whenDD.val(cc.whenDD);
     fields.whenYY.val(cc.whenYY);
+    fields.yourName.val(cc.yourName);
 
     // Building the cropper image source is tricky due to CORS issues.
     if (cc.imageId) {
@@ -121,6 +124,13 @@ jq2(function($) {
     }
     else {
       // Update validation
+
+      // yourName is required
+      var yourNameNeeded = !data.yourName;
+      fields.pagePW.css({borderColor:(yourNameNeeded ? 'red' : '#ccc')});
+      if (yourNameNeeded) {
+        firstInvalidField = firstInvalidField || fields.yourName;
+      }
 
       // pagePW is required if it's default
       var pwNeeded = isDefaultPW() && data.pagePW == hashPW(newPagePW);
