@@ -97,7 +97,7 @@ jq2(function($) {
         imageSrc = fromSS.coverImageUrl.replace(/^.*squarespace.com/, loc.protocol + '//' + loc.host);
       }
       else {
-        imageSrc = 'https://istandbesideher.squarespace.com/item/' + cc.imageId + '?format=original'
+        imageSrc = 'https://istandbesideher.org/item/' + cc.imageId + '?format=original'
       }
       cropper.cropit('imageSrc', imageSrc);
     }
