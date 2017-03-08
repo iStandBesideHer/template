@@ -57,8 +57,8 @@ jq2(function($) {
           whenMM: $(inputs[2]),
           whenDD: $(inputs[3]),
           whenYY: $(inputs[4]),
-          pagePW: $(inputs[5]),
-          yourName: $(inputs[6]),
+          yourName: $(inputs[5]),
+          pagePW: $(inputs[6]),
           submit: $(inputs[7])
         }
       }
