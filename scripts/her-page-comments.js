@@ -65,15 +65,17 @@ jq2(function($) {
     $('#comments .comment-form:first').append(Mustache.render(besideWaysTemplate, besideWays));
     $('.comment-list').before(whoDoYouStandBesideTemplate);
     $('.comment-form').on('change', scrapeComment);
-    $('.way-check').on('click', function(event) {
-      var $t = $(this);
-      var checkbox = $t.find('input[type=checkbox]');
+    $('.way-check input[type=checkbox]').on('click', function(event) {
+      var checkbox = $(this);
       var isChecked = checkbox.is(':checked');
-      checkbox.attr({checked: !isChecked});
+      if (isChecked) {
+        var wayName = checkbox.attr('data-way-type');
+        var way = getBesideWay(wayName);
+        if (way.href) {
+          openSocial(way.href);
+        }
+      }
     })
-
-    // Add social icons and actions
-    var wayActions = $('.way-action');
 
     // Fixup the comment preview action
     $('#comments .preview-comment').on('click',function(){
@@ -157,19 +159,11 @@ jq2(function($) {
       href:'mailto:%20?subject=' + shareTitle + '&body=' + shareUrl
     },{
       name:'donation',
-      alt:'By donating in her behalf',
+      alt:'By donating to her cause',
       icon:'heart-24.png',
-      desc:'By donating in her behalf'
+      desc:'By donating to her cause'
     }
   ],
-  action: function() {
-    var way = this;
-    var html = '';
-    if (way.href) {
-      html = '<a onclick="openSocial(\'' + way.href + '\');return false" href="' + way.href + '" target="_blank">Post <img src="/assets/' + way.icon + '"></a>';
-    }
-    return html;
-  }
   };
 
   var getBesideWay = function(wayName) {
@@ -208,19 +202,6 @@ jq2(function($) {
 '  .way-desc {' +
 '    padding:0px 20px;' +
 '  }' +
-'  .beside-way .way-action {' +
-'    float: right;' +
-'    margin-right: 20px;' +
-'    font-size: 14px;' +
-'  }' +
-'  .way-action img {' +
-'    height: 24px;' +
-'    padding: 2px;' +
-'    background: #111;' +
-'    border-radius: 16px;' +
-'    margin-left: 5px;' +
-'    margin-bottom: -7px;' +
-'  }' +
 '  .squarespace-comments {' +
 '    margin-top:-32px;' +
 '  }' +
@@ -255,9 +236,6 @@ jq2(function($) {
 '    </div>' +
 '    <div class="way-desc">' +
 '      {{{desc}}}' +
-'    </div>' +
-'    <div class="way-action">' +
-'      {{{action}}}' +
 '    </div>' +
 '  </div>' +
 '  <div style="height:1px; clear:both;">&nbsp;</div>' +
