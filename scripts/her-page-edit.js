@@ -15,6 +15,7 @@ jq2(function($) {
 
   var hasImageLoaded = false;
   var hasImageChanged = false;
+  var ignoreNextLoaded = false;
 
   var $form = $('.Main-content form');
   var hashPW = function(pagePW) {return Base64.encode(pagePW.toLowerCase());};
@@ -102,6 +103,7 @@ jq2(function($) {
       else {
         imageSrc = 'https://istandbesideher.org/item/' + cc.imageId + '?format=original'
       }
+      ignoreNextLoaded = true;
       cropper.cropit('imageSrc', imageSrc);
     }
   }
@@ -127,7 +129,7 @@ jq2(function($) {
 
       // yourName is required
       var yourNameNeeded = !data.yourName;
-      fields.pagePW.css({borderColor:(yourNameNeeded ? 'red' : '#ccc')});
+      fields.yourName.css({borderColor:(yourNameNeeded ? 'red' : '#ccc')});
       if (yourNameNeeded) {
         firstInvalidField = firstInvalidField || fields.yourName;
       }
@@ -294,6 +296,7 @@ jq2(function($) {
       },
       onImageLoaded:function(){
         hasImageLoaded = true;
+        hasImageChanged = ignoreNextLoaded ? hasImageChanged : true;
       },
       onOffsetChange:function(){
         hasImageChanged = hasImageLoaded;
