@@ -265,15 +265,15 @@ jq2(function($) {
 '  <div class="cropit-preview"></div>' +
 '  <div class="picture-controls">' +
 '' +
-'    <span class="icon icon-rotate-left rotate-ccw-btn"></span>' +
-'    <span class="icon icon-rotate-right rotate-cw-btn"></span>' +
+'    <img class="icon rotate-ccw-btn" src="/assets/rotate-left-20.png">' +
+'    <img class="icon rotate-cw-btn" src="/assets/rotate-right-20.png">' +
 '' +
-'    <span class="icon icon-image small-image"></span>' +
+'    <img class="icon small-image" src="/assets/picture-o-24.png" style="margin-left: 20px; width:20px">' +
 '    <input type="range" class="cropit-image-zoom-input custom">' +
-'    <span class="icon icon-image large-image"></span>' +
+'    <img class="icon large-image" src="/assets/picture-o-24.png">' +
 '' +
 '    <input type="file" class="cropit-image-input" />' +
-'    <span class="select-image-btn">Select a picture</span>' +
+'    <span class="select-image-btn"><u>Upload a picture</u></span>' +
 '  </div>' +
 '' +
 '</div>' 
@@ -283,6 +283,7 @@ jq2(function($) {
     cropper.cropit({
       minZoom: 'fit',
       maxZoom: 1.5,
+      initialZoom: 'min',
       exportZoom: 2,
       freeMove: false,
       imageBackground: false,
@@ -351,6 +352,9 @@ jq2(function($) {
 '  }' +
 '  .picture-controls input {' +
 '    cursor: pointer;' +
+'  }' +
+'  .picture-controls .icon {' +
+'    padding: 0 10px;' +
 '  }' +
 '</style>';
   $('body').append(editPageStyle);
